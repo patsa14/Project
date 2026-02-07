@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export default function Properties() {
+export default function ProjectsPage() {
   const defaultProperties = [
     {
       id: 1,
@@ -45,38 +45,7 @@ export default function Properties() {
 
   return (
     <main className="min-h-screen bg-sky-50">
-      {/* Header (Navigation Bar) */}
-      <header className="sticky top-0 bg-gradient-to-l from-sky-700 via-white shadow-lg py-6 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <img src="/images/logo.png" alt="Logo" className="h-12 w-12 object-contain" />
-            <div className="text-2xl font-bold text-gray-800">UTO Advance</div>
-          </div>
-          <nav>
-  <ul className="flex space-x-6">
-    {['Home', 'About', 'Properties', 'Contact'].map((item) => (
-      <li key={item}>
-        <Link
-          href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-          className="text-gray-900 font-medium hover:text-slate-500 transition-all"
-        >
-          {item}
-        </Link>
-      </li>
-    ))}
-    <li>
-      <Link
-        href="/admin/login"
-        className="text-red-600 font-medium hover:text-red-800 transition-all"
-      >
-        Admin
-      </Link>
-    </li>
-  </ul>
-</nav>
-
-        </div>
-      </header>
+    
 
       {/* Cover Section */}
       <section
@@ -128,11 +97,11 @@ export default function Properties() {
         <div className="container mx-auto text-center">
           <p className="text-gray-400">&copy; 2024 UTO Advance Engineering. All rights reserved.</p>
           <div className="mt-4 flex justify-center space-x-6">
-            {["Facebook", "Instagram"].map((platform) => (
+            {["Instagram"].map((platform) => (
               <a
                 key={platform}
-                href="#"
-                className="text-gray-400 hover:text-sky-400 transition-all duration-300"
+                href="https://www.instagram.com/uto_advance_engineering/"
+                className="text-gray-400 hover:text-sky-400 transition"
               >
                 {platform}
               </a>

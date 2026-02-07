@@ -1,200 +1,250 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
-export default function Contact() {
-  const [formData, setFormData] = useState({
+type FormDataType = {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+};
+
+export default function ContactPage() {
+  const [formData, setFormData] = useState<FormDataType>({
     name: '',
     phone: '',
     email: '',
     message: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if form fields are filled
-    if (!formData.name || !formData.email || !formData.message) {
-      alert("All fields are required.");
+    if (!formData.name || !formData.phone || !formData.email || !formData.message) {
+      alert('All fields are required.');
       return;
     }
 
-    // Ensure email is valid
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(formData.email)) {
-      alert("Please enter a valid email address.");
+      alert('Please enter a valid email address.');
       return;
     }
-
-    console.log("Form data before submission:", formData); // Debug: check data
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response from server:', errorData);
-        throw new Error(errorData.message || 'Failed to submit form.');
+        throw new Error('Failed to submit form');
       }
 
-      const data = await response.json();
-      console.log('Form Submitted:', data);
       alert('Form submitted successfully!');
       setFormData({ name: '', phone: '', email: '', message: '' });
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert(error.message || 'An error occurred while submitting the form.');
+      console.error(error);
+      alert('Something went wrong. Please try again.');
     }
   };
 
   return (
     <div>
-      {/* Header */}
-      <header className="sticky top-0 bg-gradient-to-l from-sky-700 via-white shadow-lg py-6 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <img
-              src="/images/logo.png"
-              alt="Logo"
-              className="h-12 w-12 object-contain"
-            />
-            <div className="text-2xl font-bold text-gray-800">UTO Advance</div>
-          </div>
-          <nav>
-            <ul className="flex space-x-6">
-              {['Home', 'About', 'Properties', 'Contact'].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                    className="text-gray-900 font-medium hover:text-slate-500"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </header>
+      
 
-      {/* Contact Form Section */}
-      <section className="py-20 bg-gray-100">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold text-sky-700 mb-8">Contact Us</h1>
-          <p className="text-lg text-gray-600 mb-12">
-            Have any questions? We'd love to hear from you. Fill out the form
-            below.
+      {/* Contact Form */}
+      <section className="py-24 bg-gradient-to-b from-sky-50 to-white">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">
+            Contact Us
+          </h1>
+          <p className="text-gray-500 mb-12 max-w-xl mx-auto">
+             
+            Fill in the form below and we’ll get back to you soon.
           </p>
+
           <form
             onSubmit={handleSubmit}
-            className="max-w-4xl mx-auto bg-white p-12 shadow-2xl rounded-xl border border-sky-200"
+            className="max-w-4xl mx-auto bg-white rounded-3xl border border-gray-200 p-10 md:p-14 shadow-lg"
           >
-            {/* Name Input */}
-            <div className="mb-6">
-              <label
-                htmlFor="name"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
+            {/* Name */}
+            <div className="mb-6 text-left">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Name
               </label>
               <input
                 type="text"
-                id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-6 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition duration-300 ease-in-out text-lg"
+                placeholder="Your full name"
+                className="w-full rounded-xl border border-gray-300 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                 required
               />
             </div>
 
-            {/* Phone Input */}
-            <div className="mb-6">
-              <label
-                htmlFor="phone"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
+            {/* Phone */}
+            <div className="mb-6 text-left">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Phone
               </label>
               <input
                 type="text"
-                id="phone"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-6 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition duration-300 ease-in-out text-lg"
+                placeholder="+66 xxx xxx xxx"
+                className="w-full rounded-xl border border-gray-300 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                 required
               />
             </div>
 
-            {/* Email Input */}
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
+            {/* Email */}
+            <div className="mb-6 text-left">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Email
               </label>
               <input
                 type="email"
-                id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-6 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition duration-300 ease-in-out text-lg"
+                placeholder="you@example.com"
+                className="w-full rounded-xl border border-gray-300 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                 required
               />
             </div>
 
-            {/* Message Input */}
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
+            {/* Message */}
+            <div className="mb-8 text-left">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Message
               </label>
               <textarea
-                id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-6 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 transition duration-300 ease-in-out text-lg"
-                rows="6"
+                rows={6}
+                placeholder="Tell us more about your project..."
+                className="w-full rounded-xl border border-gray-300 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 resize-none"
                 required
-              ></textarea>
+              />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-sky-700 text-white py-4 px-6 rounded-lg hover:bg-sky-600 focus:outline-none transition duration-300 ease-in-out"
+              className="w-full rounded-full bg-gradient-to-r from-sky-600 to-sky-800 py-4 text-white text-sm font-semibold shadow-md hover:opacity-90 transition"
             >
-              Submit
+              Send Message
             </button>
           </form>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
+
+      {/* Map */}
+      <section className="pt-1 pb-20 bg-white">
         <div className="container mx-auto text-center">
-          <p className="text-gray-400">
-            &copy; 2024 UTO Advance Engineering. All rights reserved.
-          </p>
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
+              Our <span className="text-sky-700">Location</span>
+          </h2>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.451978783118!2d98.37348220000001!3d7.9521561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3050311b9804bf87%3A0x4ce5c660456e245!2sUTO%20Advance%20Engineering!5e0!3m2!1sen!2sth!4v1770464729523!5m2!1sen!2sth"
+            width="100%"
+            height="400"
+            className="rounded-lg shadow-lg"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+          />
         </div>
+      </section>
+
+      {/* ===== CONTACT INFO ===== */}
+        <section
+          id="contact-info"
+          className="py-20 bg-gradient-to-br from-sky-50 via-white to-slate-50"
+        >
+          <div className="container mx-auto px-6 max-w-4xl text-center">
+
+            {/* Title */}
+            <h3 className="text-4xl font-extrabold text-gray-800 mb-4">
+              Contact <span className="text-sky-600">Info</span>
+            </h3>
+
+            <p className="text-gray-600 mb-12 text-lg">
+              We’d love to hear from you. Reach out anytime through the channels below.
+            </p>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+              {/* Phone */}
+              <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-xl transition">
+                <div className="text-sky-600 text-4xl mb-4">📞</div>
+                <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                  Phone
+                </h4>
+                <p className="text-gray-600 text-sm">
+                  +66 98 947 9155 <br />
+                  +66 98 764 7897
+                </p>
+              </div>
+
+              {/* Email */}
+              <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-xl transition">
+                <div className="text-sky-600 text-4xl mb-4">✉️</div>
+                <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                  Email
+                </h4>
+                <p className="text-gray-600 text-sm break-all">
+                  utoadvance@gmail.com
+                </p>
+              </div>
+
+              {/* Address */}
+              <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-xl transition">
+                <div className="text-sky-600 text-4xl mb-4">📍</div>
+                <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                  Office
+                </h4>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  119/110 Setthasiri (Koh Kaew)<br />
+                  Mueang, Phuket 83000
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+
+
+      <footer className="bg-gray-800 text-white py-8 text-center">
+        <p className="text-gray-400">
+          © 2024 UTO Advance Engineering. All rights reserved.
+        </p>
+        <div className="mt-4 flex justify-center space-x-6">
+            {["Instagram"].map((platform) => (
+              <a
+                key={platform}
+                href="https://www.instagram.com/uto_advance_engineering/"
+                className="text-gray-400 hover:text-sky-400 transition"
+              >
+                {platform}
+              </a>
+            ))}
+          </div>
       </footer>
     </div>
   );

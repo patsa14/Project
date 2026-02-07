@@ -1,8 +1,16 @@
 'use client';
 
+
 import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 
 export default function Home() {
   const [username, setUsername] = useState<string | null>(null);
@@ -16,159 +24,71 @@ export default function Home() {
     { id: 4, name: "Design and Drafting", img: "/images/design.jpg" },
   ]);
 
+  const heroImages = [
+  '/images/project1.jpg',
+  '/images/project2.jpg',
+  '/images/project3.jpg',
+  '/images/project4.jpg',
+];
+
+
   useEffect(() => {
-    // Retrieve the username from localStorage
+  const syncAuthState = () => {
     const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername); // Set the username
-    }
-  }, []);
 
-  const handleLogout = () => {
-    // Clear localStorage on logout
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-
-    // Update the state to reflect logout
-    setUsername(null);  // This will remove the username from the UI
-    setLoggedOut(true);  // Show logout message
+    setUsername(storedUsername);
+    setLoggedOut(!storedUsername);
   };
+
+  syncAuthState(); // ตอนโหลดหน้า
+
+  window.addEventListener('storage', syncAuthState);
+
+  return () => {
+    window.removeEventListener('storage', syncAuthState);
+  };
+}, []);
+
+
 
   return (
     <div>
-      {/* Header */}
-      <header className="sticky top-0 bg-gradient-to-l from-sky-700 via-white shadow-lg py-6 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <img src="/images/logo.png" alt="Logo" className="h-12 w-12 object-contain" />
-            <div className="text-2xl font-bold text-gray-800">UTO Advance</div>
-          </div>
-
-          {/* Desktop Menu */}
-          <nav>
-            <ul className="hidden md:flex space-x-6 items-center">
-              {["Home", "About", "Properties", "Contact"].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                    className="text-gray-900 font-medium hover:text-slate-500"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-              {/* Sign In and Sign Up Buttons */}
-              <li>
-                <div className="flex space-x-4">
-                  {!username ? (
-                    <>
-                      <Link href="/login">
-                        <button className="px-4 py-2 border bg-white border-gray-400 text-black rounded-md hover:bg-gray-100">
-                          Sign in
-                        </button>
-                      </Link>
-
-                      <Link href="/register">
-                        <button className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800">
-                          Sign up
-                        </button>
-                      </Link>
-                    </>
-                  ) : (
-                    <button
-                      onClick={handleLogout}
-                      className="px-4 py-2 bg-red-800 text-white rounded-md hover:bg-red-700"
-                    >
-                      Logout
-                    </button>
-                  )}
-                </div>
-              </li>
-            </ul>
-          </nav>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-gray-900"
-          >
-            {isMobileMenuOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            )}
-          </button>
+      
+      {/* ===== HERO SLIDER ===== */}
+<section id="home" className="relative h-[600px]">
+  <Swiper
+    modules={[Autoplay, Pagination]}
+    autoplay={{ delay: 4000, disableOnInteraction: false }}
+    pagination={{ clickable: true }}
+    loop
+    className="h-full"
+  >
+    {heroImages.map((img, i) => (
+      <SwiperSlide key={i}>
+        <div
+          className="relative h-[600px] bg-cover bg-center"
+          style={{ backgroundImage: `url(${img})` }}
+        >
+          {/* dark overlay */}
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         </div>
-      </header>
+      </SwiperSlide>
+    ))}
+  </Swiper>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <nav className="md:hidden bg-white shadow-lg py-4">
-          <ul className="space-y-4 text-center">
-            {["Home", "About", "Properties", "Contact"].map((item) => (
-              <li key={item}>
-                <Link
-                  href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                  onClick={() => setIsMobileMenuOpen(false)} // Close the menu after clicking
-                  className="block text-gray-900 font-medium hover:text-slate-500"
-                >
-                  {item}
-                </Link>
-              </li>
-            ))}
-            {/* Sign In and Sign Up Buttons */}
-            <li>
-              <div className="flex flex-col items-center space-y-4">
-                {!username ? (
-                  <>
-                    <Link href="/login">
-                      <button
-                        onClick={() => setIsMobileMenuOpen(false)} // Close the menu after clicking
-                        className="px-4 py-2 border bg-white border-gray-400 text-black rounded-md hover:bg-gray-100"
-                      >
-                        Sign in
-                      </button>
-                    </Link>
+  {/* ===== HERO TEXT (does NOT block dots) ===== */}
+  <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center text-white text-center">
+    <div>
+      <h1 className="text-6xl font-extrabold">
+        Find Your Dream <span className="text-sky-400">Home</span>
+      </h1>
+      <p className="mt-4 text-lg max-w-xl mx-auto">
+        Discover luxurious properties tailored to your needs.
+      </p>
+    </div>
+  </div>
+</section>
 
-                    <Link href="/register">
-                      <button
-                        onClick={() => setIsMobileMenuOpen(false)} // Close the menu after clicking
-                        className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
-                      >
-                        Sign up
-                      </button>
-                    </Link>
-                  </>
-                ) : (
-                  <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 bg-red-800 text-white rounded-md hover:bg-red-700"
-                  >
-                    Logout
-                  </button>
-                )}
-              </div>
-            </li>
-          </ul>
-        </nav>
-      )}
-
-      {/* Hero Section */}
-      <section
-        id="home"
-        className="relative w-full h-[600px] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/company2.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div className="relative z-10 container mx-auto text-center text-white pt-40">
-          <h1 className="text-6xl font-extrabold">
-            Find Your Dream <span className="text-sky-900">Home</span>
-          </h1>
-          <p className="mt-4 text-lg max-w-xl mx-auto">
-            Discover luxurious properties tailored to your needs.
-          </p>
-        </div>
-      </section>
 
       {/* Display welcome message with a beautiful design */}
       {username && (
@@ -217,40 +137,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Locations Section */}
-      <section id="locations" className="py-20 bg-gray-100">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">Our Locations</h2>
-          <p className="text-gray-700 mb-8">Find us in the most convenient locations around the city.</p>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=..."
-            width="100%"
-            height="400"
-            className="rounded-lg shadow-lg border"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-      </section>
-
-      {/* Contact Info Section */}
-      <section id="contact-info" className="py-12 bg-white">
-        <div className="container mx-auto text-center">
-          <h3 className="text-3xl font-semibold text-gray-800 mb-4">Contact Info</h3>
-          <p className="text-gray-600 mb-6">We’d love to hear from you. Reach out to us through any of the following:</p>
-          <div className="flex flex-col space-y-4 items-center">
-            <p className="text-lg font-medium text-gray-700">
-              <strong>Phone:</strong> +66 98 947 9155 <br /> +66 98 764 7897
-            </p>
-            <p className="text-lg font-medium text-gray-700">
-              <strong>Email:</strong> Utoadvance@gmail.com
-            </p>
-            <p className="text-lg font-medium text-gray-700">
-              <strong>Office Address:</strong> 123/112 Saransiri(koh kaew), Mueang, Phuket 83000
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8">
@@ -258,6 +145,17 @@ export default function Home() {
           <p className="text-gray-400">
             &copy; 2024 UTO Advance Engineering. All rights reserved.
           </p>
+          <div className="mt-4 flex justify-center space-x-6">
+            {["Instagram"].map((platform) => (
+              <a
+                key={platform}
+                href="https://www.instagram.com/uto_advance_engineering/"
+                className="text-gray-400 hover:text-sky-400 transition"
+              >
+                {platform}
+              </a>
+            ))}
+          </div>
         </div>
       </footer>
     </div>

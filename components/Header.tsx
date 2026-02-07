@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 type HeaderProps = {
   isMobileMenuOpen: boolean;
-  setIsMobileMenuOpen: (v: boolean) => void;
+  setIsMobileMenuOpen: (value: boolean) => void;
 };
 
 export default function Header({
@@ -14,73 +14,82 @@ export default function Header({
 }: HeaderProps) {
   const [username, setUsername] = useState<string | null>(null);
 
-  // 🔁 Sync login state immediately
+  // ✅ sync login / logout real-time
   useEffect(() => {
     const syncAuth = () => {
       setUsername(localStorage.getItem('username'));
     };
 
     syncAuth();
-    window.addEventListener('auth-change', syncAuth);
-    return () => window.removeEventListener('auth-change', syncAuth);
+    window.addEventListener('storage', syncAuth);
+    window.addEventListener('focus', syncAuth);
+
+    return () => {
+      window.removeEventListener('storage', syncAuth);
+      window.removeEventListener('focus', syncAuth);
+    };
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem('token');
     localStorage.removeItem('username');
-    window.dispatchEvent(new Event('auth-change'));
-    setIsMobileMenuOpen(false);
+    window.dispatchEvent(new Event('storage'));
   };
 
-  const menuItems = ['Home', 'About', 'Projects', 'Contact'];
-
+  const menuItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Contact', href: '/contact' },
+  ];
 
   return (
     <>
       {/* ===== HEADER ===== */}
-      <header className="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-gray-200">
-        <div className="w-full flex items-center justify-between px-6 py-4">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+        <div className="flex items-center justify-between px-6 py-4">
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img
-              src="/images/logo.png"
-              alt="Logo"
-              className="h-10 w-10 object-contain"
-            />
-            <span className="text-xl font-bold text-gray-800">
+            <img src="/images/logo.jpg
+            " alt="logo" className="h-18 w-12" />
+            <span className="font-bold text-lg text-gray-800">
               UTO Advance
             </span>
           </div>
 
           {/* ===== DESKTOP MENU ===== */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             {menuItems.map((item) => (
               <Link
-                key={item}
-                href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                key={item.label}
+                href={item.href}
                 className="text-sm font-medium text-gray-700 hover:text-sky-700 transition"
               >
-                {item}
+                {item.label}
               </Link>
             ))}
 
             {!username ? (
               <div className="flex items-center gap-3">
-                <Link href="/login">
-                  <button className="px-5 py-2 rounded-full border border-gray-300 text-sm hover:bg-gray-100 transition">
-                    Sign in
-                  </button>
+                <Link
+                  href="/login"
+                  className="px-4 py-2 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Sign in
                 </Link>
-                <Link href="/register">
-                  <button className="px-5 py-2 rounded-full bg-gradient-to-r from-sky-600 to-sky-800 text-white text-sm shadow hover:opacity-90 transition">
-                    Sign up
-                  </button>
+
+                <Link
+                  href="/register"
+                  className="px-4 py-2 rounded-full border border-sky-600 bg-sky-600 text-white text-sm hover:bg-sky-700 transition"
+                >
+                  Sign up
                 </Link>
               </div>
             ) : (
               <button
                 onClick={handleLogout}
-                className="px-5 py-2 rounded-full bg-red-600 text-white text-sm hover:bg-red-700 transition"
+                className="px-4 py-2 rounded-full border border-red-600 bg-red-600 text-white text-sm hover:bg-red-700 transition"
               >
                 Logout
               </button>
@@ -90,75 +99,64 @@ export default function Header({
           {/* ===== HAMBURGER ===== */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+            className="md:hidden text-4xl"
           >
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d={
-                  isMobileMenuOpen
-                    ? 'M6 18L18 6M6 6l12 12'
-                    : 'M4 6h16M4 12h16M4 18h16'
-                }
-              />
-            </svg>
+            ☰
           </button>
         </div>
       </header>
 
       {/* ===== MOBILE MENU ===== */}
-      {isMobileMenuOpen && (
-        <nav className="md:hidden bg-white shadow-xl rounded-b-3xl px-6 py-6">
-          <ul className="flex flex-col gap-5 text-center">
-            {menuItems.map((item) => (
-              <li key={item}>
-                <Link
-                  href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-lg font-medium text-gray-800 hover:text-sky-700 transition"
-                >
-                  {item}
-                </Link>
-              </li>
-            ))}
+      {/* ===== MOBILE MENU ===== */}
+{isMobileMenuOpen && (
+  <div className="md:hidden bg-white border-b shadow-md rounded-b-2xl px-4 py-4 space-y-3">
+    
+    {/* Menu links */}
+    {menuItems.map((item) => (
+      <Link
+        key={item.label}
+        href={item.href}
+        onClick={() => setIsMobileMenuOpen(false)}
+        className="block text-base font-medium text-gray-800 text-center py-1.5 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+      >
+        {item.label}
+      </Link>
+    ))}
 
-            <div className="h-px bg-gray-200 my-2" />
+    {/* Divider */}
+    <div className="h-px bg-gray-200" />
 
-            {!username ? (
-              <div className="flex flex-col gap-3">
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="py-3 rounded-full border border-gray-300 text-gray-700 text-sm"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-800 text-white text-sm"
-                >
-                  Sign up
-                </Link>
-              </div>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="py-3 rounded-full bg-red-600 text-white text-sm"
-              >
-                Logout
-              </button>
-            )}
-          </ul>
-        </nav>
-      )}
-    </>
-  );
-}
+    {/* Auth buttons */}
+    {!username ? (
+      <div className="flex flex-col gap-2">
+        <Link
+          href="/login"
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="py-2 text-center rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition"
+        >
+          Sign in
+        </Link>
+
+        <Link
+          href="/register"
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="py-2 text-center rounded-full bg-sky-600 text-sm text-white hover:bg-sky-700 transition"
+        >
+          Sign up
+        </Link>
+      </div>
+    ) : (
+      <button
+        onClick={handleLogout}
+        className="w-full py-2 rounded-full bg-red-600 text-sm text-white hover:bg-red-700 transition"
+      >
+        Logout
+      </button>
+    )}
+  </div>
+)}
+
+
+        </>
+      );
+    }

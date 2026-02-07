@@ -46,9 +46,14 @@ export default function Login() {
         setError('');
         console.log('Logged in user:', data.user);
         
-        // Store token and username
         localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.user.name);  // Store the username
+        localStorage.setItem('username', data.user.name);
+
+        // 👇 FORCE HEADER TO RE-RENDER
+        window.dispatchEvent(new Event('storage'));
+         
+        router.push('/');
+
 
         // Redirect to the homepage
         router.push('/'); // Back to Home after login
@@ -70,53 +75,91 @@ export default function Login() {
   };
 
   return (
-    <div className="container mx-auto py-20">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Login</h1>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-        {error && <p className="text-red-600 mb-4">{error}</p>}
-        {success && <p className="text-green-600 mb-4">{success}</p>}
-        
-        <div className="mb-4">
-          <label htmlFor="email" className="block font-medium text-gray-700">Email</label>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-sky-200 px-4">
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+      
+      {/* Title */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
+        <p className="text-gray-500 mt-2 text-sm">
+          Sign in to continue to <span className="font-semibold">UTO Advance</span>
+        </p>
+      </div>
+
+      {/* Messages */}
+      {error && (
+        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-600">
+          {success}
+        </div>
+      )}
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
         </div>
-        
-        <div className="mb-4">
-          <label htmlFor="password" className="block font-medium text-gray-700">Password</label>
+
+        {/* Password */}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            Password
+          </label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Buttons */}
+        <div className="flex flex-col gap-3 pt-2">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             disabled={loading}
+            className="w-full rounded-full bg-gradient-to-r from-sky-600 to-sky-800 py-3 text-white text-sm font-semibold shadow hover:opacity-90 transition disabled:opacity-60"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
+
           <button
             type="button"
             onClick={handleBackToHome}
-            className="px-4 py-2 text-blue-600 hover:text-blue-800 border border-blue-600 rounded-md"
+            className="w-full rounded-full border border-sky-600 py-3 text-sky-700 text-sm font-medium hover:bg-sky-50 transition"
           >
             Back to Home
           </button>
         </div>
       </form>
+
+      {/* Footer */}
+      <p className="mt-8 text-center text-xs text-gray-400">
+        © {new Date().getFullYear()} UTO Advance
+      </p>
     </div>
-  );
+  </div>
+);
+
 }
