@@ -1,114 +1,119 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 
 export default function ProjectsPage() {
-  const defaultProperties = [
-    {
-      id: 1,
-      name: "Pool Villa",
-      location: "Manik - Phuket",
-      description: "Discover the epitome of contemporary living in our sleek and chic modern stylish apartments.",
-      img: "/images/pool.jpg",
-    },
-    {
-      id: 2,
-      name: "Cafe",
-      location: "Mueang - Phuket",
-      description: "Experience the perfect blend of sophistication and urban living in our cutting-edge contemporary apartments.",
-      img: "/images/pro1.jpg",
-    },
+  const properties = [
+    { id: 1, name: "Pool Villa", location: "Manik - Phuket", img: "/images/pool.jpg", projectType: "Residential" },
+    { id: 2, name: "Cafe", location: "Mueang - Phuket", img: "/images/pro1.jpg", projectType: "Commercial" },
+    { id: 3, name: "Luxury Villa", location: "Thalang - Phuket", img: "/images/project3.jpg", projectType: "Residential" },
+    { id: 4, name: "Dental Clinic", location: "Thalang - Phuket", img: "/images/dental3.jpg", projectType: "Commercial" },
+    { id: 5, name: "Dermatology Clinic", location: "Thalang - Phuket", img: "/images/Drpat3.jpg", projectType: "Commercial" },
+    { id: 6, name: "Boutique Villa", location: "Thalang - Phuket", img: "/images/wood1.jpg", projectType: "Residential" },
   ];
 
-  const [properties, setProperties] = useState(defaultProperties);
+  const [selectedType, setSelectedType] = useState("All");
 
-  useEffect(() => {
-    // Fetch properties from the API
-    async function fetchProperties() {
-      try {
-        const response = await fetch('/api/admin/properties');
-        if (!response.ok) {
-          throw new Error('Failed to fetch project');
-        }
-        const data = await response.json();
-        if (data.length > 0) {
-          setProperties(data);
-        }
-      } catch (error) {
-        console.error('Error fetching properties:', error);
-        // Keep the default properties if the API fails
-      }
-    }
-    fetchProperties();
-  }, []);
+  const filteredProperties =
+    selectedType === "All"
+      ? properties
+      : properties.filter(p => p.projectType === selectedType);
 
   return (
     <main className="min-h-screen bg-sky-50">
-    
 
-      {/* Cover Section */}
+      {/* ===== Cover Section ===== */}
       <section
-        className="relative bg-cover bg-center h-[400px] text-shadow rounded-xl overflow-hidden shadow-lg mx-4 md:mx-8 mt-5"
+        className="relative bg-cover bg-center h-[350px] rounded-xl overflow-hidden shadow-lg mx-4 md:mx-8 mt-5"
         style={{ backgroundImage: "url('/images/inte.jpg')" }}
       >
-        <div className="absolute inset-0 bg-slate-800 opacity-60"></div>
-        <div className="relative z-10 flex items-center justify-center h-full text-center text-white">
+        <div className="absolute inset-0 bg-slate-900/60"></div>
+        <div className="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
           <div>
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">Explore Our Projects</h1>
-            <p className="mt-4 text-lg md:text-xl max-w-4xl mx-auto">
-              Discover your dream with us – luxurious, stylish, and conveniently located.
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Our Projects
+            </h1>
+            <p className="mt-3 text-base md:text-lg max-w-2xl mx-auto">
+              Residential and Commercial engineering works.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Properties Section */}
-      <section
-        className="relative bg-sky-800 rounded-xl shadow-lg mx-4 md:mx-8 mt-5 mb-10 overflow-hidden"
-      >
-        <div className="container mx-auto py-10">
-          {properties.map((property) => (
-            <div
-              key={property.id}
-              className="mb-12 bg-white p-6 rounded-lg shadow-md border border-gray-300"
-            >
-              <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
-                <div className="md:w-1/2">
+      {/* ===== Type Toggle ===== */}
+      <section className="mt-8 flex justify-center gap-4">
+        {["All", "Residential", "Commercial"].map((type) => (
+          <button
+            key={type}
+            onClick={() => setSelectedType(type)}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition ${
+              selectedType === type
+                ? "bg-sky-700 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-sky-100"
+            }`}
+          >
+            {type}
+          </button>
+        ))}
+      </section>
+
+      {/* ===== Projects Grid ===== */}
+      <section className="mx-4 md:mx-8 mt-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {filteredProperties.map((property) => {
+            const isResidential = property.projectType === "Residential";
+
+            return (
+              <div
+                key={property.id}
+                className="bg-white rounded-xl shadow hover:shadow-xl transition duration-300 overflow-hidden"
+              >
+                {/* Image */}
+                <div className="relative h-52 overflow-hidden">
                   <img
                     src={property.img}
                     alt={property.name}
-                    className="w-full h-auto rounded-lg"
+                    className="w-full h-full object-cover hover:scale-105 transition duration-500"
                   />
+
+                  {/* TYPE BADGE (COLOR CHANGES HERE ONLY) */}
+                  <span
+                    className={`absolute top-3 left-3 px-4 py-1 text-xs font-semibold rounded-full text-white
+                      ${
+                        isResidential
+                          ? "bg-sky-500"
+                          : "bg-blue-700"
+                      }
+                    `}
+                  >
+                    {property.projectType}
+                  </span>
                 </div>
-                <div className="md:w-1/2 space-y-4">
-                  <h3 className="text-3xl font-semibold text-gray-900">{property.name}</h3>
-                  <p className="text-gray-500 uppercase text-sm">{property.location}</p>
-                  <p className="text-gray-700">{property.description}</p>
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {property.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {property.location}
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ===== Footer ===== */}
       <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto text-center">
-          <p className="text-gray-400">&copy; 2024 UTO Advance Engineering. All rights reserved.</p>
-          <div className="mt-4 flex justify-center space-x-6">
-            {["Instagram"].map((platform) => (
-              <a
-                key={platform}
-                href="https://www.instagram.com/uto_advance_engineering/"
-                className="text-gray-400 hover:text-sky-400 transition"
-              >
-                {platform}
-              </a>
-            ))}
-          </div>
+        <div className="text-center text-gray-400 text-sm">
+          © 2024 UTO Advance Engineering. All rights reserved.
         </div>
       </footer>
+
     </main>
   );
 }
