@@ -17,6 +17,7 @@ export default function Home() {
     { id: 2, name: "Water Supply System", img: "/images/water.jpg" },
     { id: 3, name: "Air Conditioning System", img: "/images/airr.jpg" },
     { id: 4, name: "Design and Drafting", img: "/images/design.jpg" },
+    { id: 5, name: "Home System Design", img: "/images/plan1.jpg" }
   ];
 
   const heroImages = [

@@ -7,7 +7,7 @@ const servicesData = [
     id: 1,
     name: "Electrical System",
     img: "/images/elec.jpg",
-    description: "Our Electrical System services provide reliable and safe installations...",
+    description: "Our Electrical System services provide reliable and safe installations.",
     gallery: ["/images/elec2.jpg", "/images/elec3.jpg"],
   },
   {
@@ -22,7 +22,7 @@ const servicesData = [
     name: "Air Conditioning System",
     img: "/images/airr.jpg",
     description:
-      "Our Air Conditioning System services offer cooling solutions tailored to your comfort and energy efficiency needs.",
+      "Our Home System Design service provides safe, efficient, and well-planned system installations for residential buildings.",
     gallery: [
       "/images/air2.jpg",
       "/images/air3.jpg",
@@ -43,6 +43,18 @@ const servicesData = [
       "/images/design5.jpg",
     ],
   },
+  {
+    id: 5,
+    name: "Home System Design",
+    img: "/images/plan1.jpg",
+    description:
+      "Our Solar Energy System services provide sustainable and energy-efficient solutions for residential and commercial projects.",
+    gallery: [
+      "/images/plan2.jpg",
+      "/images/plan3.jpg",
+      "/images/plan4.jpg",
+    ],
+  },  
 ];
 
 export default function ServiceDetail({ params }) {
