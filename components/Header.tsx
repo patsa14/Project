@@ -51,8 +51,8 @@ export default function Header({
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src="/images/logo.jpg
-            " alt="logo" className="h-18 w-12" />
+            <img src="/images/logo_noname.png
+            " alt="logo" className="h-13 w-9" />
             <span className="font-bold text-lg text-gray-800">
               UTO Advance
             </span>

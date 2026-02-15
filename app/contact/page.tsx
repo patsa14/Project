@@ -62,20 +62,20 @@ export default function ContactPage() {
     <div>
       
 
-      {/* Contact Form */}
+      {/* CONTACT FORM */}
       <section className="py-24 bg-gradient-to-b from-sky-50 to-white">
-        <div className="container mx-auto px-4 text-center">
+        <div className="w-full max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">
             Contact Us
           </h1>
-          <p className="text-gray-500 mb-12 max-w-xl mx-auto">
-             
+
+          <p className="text-gray-500 mb-12">
             Fill in the form below and we’ll get back to you soon.
           </p>
 
           <form
             onSubmit={handleSubmit}
-            className="max-w-4xl mx-auto bg-white rounded-3xl border border-gray-200 p-10 md:p-14 shadow-lg"
+            className="bg-white rounded-3xl border border-gray-200 p-10 md:p-14 shadow-lg"
           >
             {/* Name */}
             <div className="mb-6 text-left">
@@ -135,7 +135,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                placeholder="Tell us more about your project..."
+                placeholder="Send us your questions or project details.."
                 className="w-full rounded-xl border border-gray-300 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 resize-none"
                 required
               />
@@ -151,24 +151,23 @@ export default function ContactPage() {
         </div>
       </section>
 
-
-      {/* Map */}
-      <section className="pt-1 pb-20 bg-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
-              Our <span className="text-sky-700">Location</span>
+      {/* MAP */}
+      <section className="py-20 bg-white">
+        <div className="w-full max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">
+            Our <span className="text-sky-700">Location</span>
           </h2>
+
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.451978783118!2d98.37348220000001!3d7.9521561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3050311b9804bf87%3A0x4ce5c660456e245!2sUTO%20Advance%20Engineering!5e0!3m2!1sen!2sth!4v1770464729523!5m2!1sen!2sth"
-            width="100%"
-            height="400"
-            className="rounded-lg shadow-lg"
+            className="w-full h-[400px] rounded-2xl shadow-lg"
             style={{ border: 0 }}
             loading="lazy"
             allowFullScreen
           />
         </div>
       </section>
+
 
       {/* ===== CONTACT INFO ===== */}
         <section

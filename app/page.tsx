@@ -40,7 +40,7 @@ export default function Home() {
     setLoggedOut(!storedUsername);
   };
 
-  syncAuthState(); // ตอนโหลดหน้า
+  syncAuthState(); 
 
   window.addEventListener('storage', syncAuthState);
 
@@ -115,7 +115,7 @@ export default function Home() {
       {/* Services Section */}
       <section id="services" className="py-20 bg-slate-50">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">What We Do</h2>
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">Our services</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
             {services.map((service) => (
               <div

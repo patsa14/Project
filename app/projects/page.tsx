@@ -29,7 +29,7 @@ export default function ProjectsPage() {
       try {
         const response = await fetch('/api/admin/properties');
         if (!response.ok) {
-          throw new Error('Failed to fetch properties');
+          throw new Error('Failed to fetch project');
         }
         const data = await response.json();
         if (data.length > 0) {
@@ -55,9 +55,9 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 bg-slate-800 opacity-60"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center text-white">
           <div>
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">Explore Our Properties</h1>
+            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">Explore Our Projects</h1>
             <p className="mt-4 text-lg md:text-xl max-w-4xl mx-auto">
-              Discover your dream property with us – luxurious, stylish, and conveniently located.
+              Discover your dream with us – luxurious, stylish, and conveniently located.
             </p>
           </div>
         </div>
