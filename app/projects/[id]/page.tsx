@@ -16,6 +16,7 @@ export default function ProjectDetail() {
         "/images/pool.jpg",
         "/images/pool2.jpg",
         "/images/pool3.jpg",
+        "/images/pool4.jpg",
       ],
     },
     {
