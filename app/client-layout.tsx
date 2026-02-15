@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Header from '@/components/Header';
+import { Toaster } from "react-hot-toast";
 
 export default function ClientLayout({
   children,
@@ -18,6 +19,14 @@ export default function ClientLayout({
       />
 
       <main className="flex-1">{children}</main>
+
+
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          className: "toast-slide",
+        }}
+      />
     </>
   );
 }

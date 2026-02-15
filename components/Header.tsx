@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import toast from "react-hot-toast";
+
 
 type HeaderProps = {
   isMobileMenuOpen: boolean;
@@ -31,10 +33,17 @@ export default function Header({
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    window.dispatchEvent(new Event('storage'));
-  };
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+
+  window.dispatchEvent(new Event('storage'));
+
+  setIsMobileMenuOpen(false);
+
+  toast.success("Logged out successfully!");
+};
+
+
 
   const menuItems = [
     { label: 'Home', href: '/' },
@@ -54,7 +63,7 @@ export default function Header({
             <img src="/images/logo_noname.png
             " alt="logo" className="h-13 w-9" />
             <span className="font-bold text-lg text-gray-800">
-              UTO Advance
+              UTO Advance Engineering
             </span>
           </div>
 
@@ -106,7 +115,7 @@ export default function Header({
         </div>
       </header>
 
-      {/* ===== MOBILE MENU ===== */}
+     
       {/* ===== MOBILE MENU ===== */}
 {isMobileMenuOpen && (
   <div className="md:hidden bg-white border-b shadow-md rounded-b-2xl px-4 py-4 space-y-3">

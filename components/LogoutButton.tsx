@@ -1,19 +1,19 @@
 'use client';
 
-const LogoutButton = () => {
+import toast from "react-hot-toast";
+
+export default function LogoutButton() {
   const handleLogout = () => {
-    // Add your logout logic here (e.g., remove token, clear session, etc.)
-    console.log('User logged out');
+    localStorage.removeItem("username");
+
+    window.dispatchEvent(new Event("storage"));
+
+    toast.success("Logged out successfully!");
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className="px-4 py-2 bg-red-500 text-white rounded"
-    >
-      Log Out
+    <button onClick={handleLogout} className="text-red-500">
+      Logout
     </button>
   );
-};
-
-export default LogoutButton;
+}
