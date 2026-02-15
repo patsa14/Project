@@ -1,15 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from "next/link";
+
 
 export default function ProjectsPage() {
   const properties = [
-    { id: 1, name: "Pool Villa", location: "Manik - Phuket", img: "/images/pool.jpg", projectType: "Residential" },
-    { id: 2, name: "Cafe", location: "Mueang - Phuket", img: "/images/pro1.jpg", projectType: "Commercial" },
-    { id: 3, name: "Luxury Villa", location: "Thalang - Phuket", img: "/images/project3.jpg", projectType: "Residential" },
-    { id: 4, name: "Dental Clinic", location: "Thalang - Phuket", img: "/images/dental3.jpg", projectType: "Commercial" },
-    { id: 5, name: "Dermatology Clinic", location: "Thalang - Phuket", img: "/images/Drpat3.jpg", projectType: "Commercial" },
-    { id: 6, name: "Boutique Villa", location: "Thalang - Phuket", img: "/images/wood1.jpg", projectType: "Residential" },
+    { id: "1", name: "Pool Villa", location: "Manik - Phuket", img: "/images/pool.jpg", projectType: "Residential" },
+    { id: "2", name: "Cafe", location: "Mueang - Phuket", img: "/images/pro1.jpg", projectType: "Commercial" },
+    { id: "3", name: "Luxury Villa", location: "Thalang - Phuket", img: "/images/project3.jpg", projectType: "Residential" },
+    { id: "4", name: "Dental Clinic", location: "Thalang - Phuket", img: "/images/dental3.jpg", projectType: "Commercial" },
+    { id: "5", name: "Dermatology Clinic", location: "Thalang - Phuket", img: "/images/Drpat3.jpg", projectType: "Commercial" },
+    { id: "6", name: "Boutique Villa", location: "Thalang - Phuket", img: "/images/wood1.jpg", projectType: "Residential" },
   ];
 
   const [selectedType, setSelectedType] = useState("All");
@@ -62,55 +64,65 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {filteredProperties.map((property) => {
-            const isResidential = property.projectType === "Residential";
+        const isResidential = property.projectType === "Residential";
 
-            return (
-              <div
-                key={property.id}
-                className="bg-white rounded-xl shadow hover:shadow-xl transition duration-300 overflow-hidden"
-              >
-                {/* Image */}
-                <div className="relative h-52 overflow-hidden">
-                  <img
-                    src={property.img}
-                    alt={property.name}
-                    className="w-full h-full object-cover hover:scale-105 transition duration-500"
-                  />
+        return (
+          <Link
+            key={property.id}
+            href={`/projects/${property.id}`}
+            className="block"
+          >
+            <div className="bg-white rounded-xl shadow hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer">
 
-                  {/* TYPE BADGE (COLOR CHANGES HERE ONLY) */}
-                  <span
-                    className={`absolute top-3 left-3 px-4 py-1 text-xs font-semibold rounded-full text-white
-                      ${
-                        isResidential
-                          ? "bg-sky-500"
-                          : "bg-blue-700"
-                      }
-                    `}
-                  >
-                    {property.projectType}
-                  </span>
-                </div>
+              <div className="relative h-52 overflow-hidden">
+                <img
+                  src={property.img}
+                  alt={property.name}
+                  className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                />
 
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {property.name}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    {property.location}
-                  </p>
-                </div>
+                <span
+                  className={`absolute top-3 left-3 px-4 py-1 text-xs font-semibold rounded-full text-white
+                    ${isResidential ? "bg-sky-500" : "bg-blue-700"}
+                  `}
+                >
+                  {property.projectType}
+                </span>
               </div>
-            );
-          })}
+
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {property.name}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {property.location}
+                </p>
+              </div>
+
+            </div>
+          </Link>
+        );
+      })}
+
 
         </div>
       </section>
 
-      {/* ===== Footer ===== */}
+      {/* ===== FOOTER ===== */}
       <footer className="bg-gray-800 text-white py-8">
-        <div className="text-center text-gray-400 text-sm">
-          © 2024 UTO Advance Engineering. All rights reserved.
+        <div className="container mx-auto text-center">
+          <p className="text-gray-400">
+            &copy; 2024 UTO Advance Engineering. All rights reserved.
+          </p>
+
+          <div className="mt-4 flex justify-center space-x-6">
+            <a
+              href="https://www.instagram.com/uto_advance_engineering/"
+              className="text-gray-400 hover:text-sky-400 transition"
+            >
+              Instagram
+            </a>
+          </div>
         </div>
       </footer>
 

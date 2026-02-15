@@ -1,20 +1,23 @@
 // /app/services/[id]/page.js
 
-import React from 'react';
+import React from "react";
+import Link from "next/link";
 
 const servicesData = [
   {
     id: 1,
     name: "Electrical System",
     img: "/images/elec.jpg",
-    description: "Our Electrical System services provide reliable and safe installations.",
+    description:
+      "Our Electrical System services provide reliable and safe installations.",
     gallery: ["/images/elec2.jpg", "/images/elec3.jpg"],
   },
   {
     id: 2,
     name: "Water Supply System",
     img: "/images/water.jpg",
-    description: "We ensure clean and efficient water supply systems...",
+    description:
+      "We ensure clean and efficient water supply systems...",
     gallery: ["/images/water2.jpg", "/images/water8.jpg"],
   },
   {
@@ -54,59 +57,90 @@ const servicesData = [
       "/images/plan3.jpg",
       "/images/plan4.jpg",
     ],
-  },  
+  },
 ];
 
 export default function ServiceDetail({ params }) {
-  const { id } = params;  // This comes from the dynamic segment [id]
-  const service = servicesData.find((service) => service.id.toString() === id);
+  const { id } = params;
+  const service = servicesData.find(
+    (service) => service.id.toString() === id
+  );
 
   if (!service) {
     return (
       <div className="container mx-auto text-center py-20">
-        <h1 className="text-4xl font-bold text-red-600">Service Not Found</h1>
-        <p className="text-lg mt-4">The requested service does not exist.</p>
+        <h1 className="text-4xl font-bold text-red-600">
+          Service Not Found
+        </h1>
+        <p className="text-lg mt-4">
+          The requested service does not exist.
+        </p>
+
+        <Link
+          href="/"
+          className="mt-6 inline-block px-4 py-2 bg-sky-600 text-white rounded-full hover:bg-sky-700 transition"
+        >
+          ← Back to Home
+        </Link>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto py-16 px-4 lg:px-20">
-      <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
-        <div className="relative w-full h-[400px]">
+
+      {/* Back Button */}
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1 px-4 py-2 
+                   rounded-full text-sm font-medium
+                   bg-sky-600 text-white
+                   hover:bg-sky-700 
+                   transition duration-200 mb-6"
+      >
+        &lt; Back to Home
+      </Link>
+
+      <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+        
+        {/* Hero Image */}
+        <div className="relative w-full h-[350px]">
           <img
             src={service.img}
             alt={service.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-            <h1 className="text-5xl font-bold text-white">{service.name}</h1>
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white text-center px-4">
+              {service.name}
+            </h1>
           </div>
         </div>
+
+        {/* Content */}
         <div className="p-8 lg:p-12">
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">{service.description}</p>
-          <div className="bg-gray-100 p-6 rounded-lg mb-6">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Why Choose This Service?</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-2">
-              <li>High-quality, professional work guaranteed.</li>
-              <li>Expert technicians with years of experience.</li>
-              <li>Customized solutions for every client.</li>
-            </ul>
-          </div>
-          <div className="bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Gallery</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p className="text-gray-700 text-lg leading-relaxed mb-8">
+            {service.description}
+          </p>
+
+          {/* Gallery Section */}
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+              Gallery
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               {service.gallery.map((image, index) => (
                 <img
                   key={index}
                   src={image}
                   alt={`${service.name} ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform"
+                  className="w-full h-56 object-cover rounded-xl shadow-md hover:scale-105 transition-transform duration-300"
                 />
               ))}
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
