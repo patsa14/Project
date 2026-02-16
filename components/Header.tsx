@@ -16,7 +16,7 @@ export default function Header({
 }: HeaderProps) {
   const [username, setUsername] = useState<string | null>(null);
 
-  // ✅ sync login / logout real-time
+  //  sync login / logout real-time
   useEffect(() => {
     const syncAuth = () => {
       setUsername(localStorage.getItem('username'));
@@ -55,7 +55,12 @@ export default function Header({
   return (
     <>
       {/* ===== HEADER ===== */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+      <header className="sticky top-0 z-50 
+                   bg-gradient-to-r from-white via-sky-100 to-sky-900
+                   shadow-md">
+
+
+
         <div className="flex items-center justify-between px-6 py-4">
 
           {/* Logo */}
@@ -108,17 +113,26 @@ export default function Header({
           {/* ===== HAMBURGER ===== */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-4xl"
+            className="md:hidden w-8 h-8 flex items-center justify-center 
+                      rounded-full hover:bg-slate-300 transition"
+            aria-label="Toggle Menu"
           >
-            ☰
+            {isMobileMenuOpen ? (
+              <span className="text-2xl font-light">✕</span>
+            ) : (
+              <span className="text-3xl font-light">☰</span>
+            )}
           </button>
         </div>
       </header>
 
      
       {/* ===== MOBILE MENU ===== */}
-{isMobileMenuOpen && (
-  <div className="md:hidden bg-white border-b shadow-md rounded-b-2xl px-4 py-4 space-y-3">
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed top-[72px] left-0 w-full 
+                        bg-white border-b shadow-md 
+                        px-4 py-4 space-y-3 z-40">
+
     
     {/* Menu links */}
     {menuItems.map((item) => (

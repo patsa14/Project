@@ -63,7 +63,7 @@ export default function ContactPage() {
       
 
       {/* CONTACT FORM */}
-      <section className="py-24 bg-gradient-to-b from-sky-50 to-white">
+      <section className="py-24 bg-gradient-to-b from-slate-200 to-white">
         <div className="w-full max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">
             Contact Us
@@ -152,7 +152,7 @@ export default function ContactPage() {
       </section>
 
       {/* MAP */}
-      <section className="py-20 bg-white">
+      <section className="py-2 bg-white">
         <div className="w-full max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-extrabold text-gray-800 mb-6">
             Our <span className="text-sky-700">Location</span>
@@ -172,7 +172,7 @@ export default function ContactPage() {
       {/* ===== CONTACT INFO ===== */}
         <section
           id="contact-info"
-          className="py-20 bg-gradient-to-br from-sky-50 via-white to-slate-50"
+          className="py-20 bg-gradient-to-br from-slate-200 via-white to-sky-50"
         >
           <div className="container mx-auto px-6 max-w-4xl text-center">
 
