@@ -6,15 +6,19 @@ import { useRouter } from 'next/navigation';
 type RegisterFormData = {
   name: string;
   email: string;
+  phone: string;
+  address: string;
   password: string;
 };
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
-    name: '',
-    email: '',
-    password: '',
-  });
+  name: '',
+  email: '',
+  phone: '',
+  address: '',
+  password: '',
+});
 
   const [message, setMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,7 +50,13 @@ export default function RegisterPage() {
 
       if (response.ok) {
         setMessage('Registration successful!');
-        setFormData({ name: '', email: '', password: '' });
+        setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              address: '',
+              password: '',
+            });
       } else {
         setMessage(data.message || 'Registration failed.');
       }
@@ -123,7 +133,37 @@ export default function RegisterPage() {
             required
             className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
+
         </div>
+        {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Phone
+            </label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Your phone number"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder="Your address"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            />
+          </div>
 
         {/* Password */}
         <div>

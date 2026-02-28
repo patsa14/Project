@@ -9,15 +9,14 @@ export async function POST(req) {
     console.log('Incoming POST request');
 
     // Parse the JSON body
-    const { name, email, password } = await req.json();
-
+    const { name, email, phone, address, password } = await req.json();
     // Basic validation
-    if (!name || !email || !password) {
-      return new Response(
-        JSON.stringify({ message: 'All fields are required.' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+    if (!name || !email || !phone || !address || !password) {
+  return new Response(
+    JSON.stringify({ message: 'All fields are required.' }),
+    { status: 400, headers: { 'Content-Type': 'application/json' } }
+  );
+}
 
     // Validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,6 +47,8 @@ export async function POST(req) {
       data: {
         name,
         email,
+        phone,
+        address,
         password: hashedPassword,
       },
     });
